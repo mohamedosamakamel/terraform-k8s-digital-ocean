@@ -12,11 +12,11 @@ resource "digitalocean_record" "a_records" {
   value  = digitalocean_loadbalancer.ingress_load_balancer.ip
   depends_on = [
     digitalocean_domain.top_level_domains,
-    kubernetes_ingress.default_cluster_ingress
+    kubernetes_ingress_v1.default_cluster_ingress
   ]
 }
 
-resource "digitalocean_record" "cname_redirects" {
+/* resource "digitalocean_record" "cname_redirects" {
   for_each = toset(var.top_level_domains)
   domain = each.value
   type   = "CNAME"
@@ -27,3 +27,4 @@ resource "digitalocean_record" "cname_redirects" {
     digitalocean_domain.top_level_domains,
   ]
 }
+ */

@@ -16,17 +16,16 @@ resource "helm_release" "nginx_ingress_chart" {
   ]
 }
 
-resource "kubernetes_ingress" "default_cluster_ingress" {
+resource "kubernetes_ingress_v1" "default_cluster_ingress" {
   depends_on = [
     helm_release.nginx_ingress_chart,
   ]
   metadata {
-    name = "${var.cluster_name}-ingress"
-    namespace  = "default"
+    name      = "${var.cluster_name}-ingress"
+    namespace = "default"
     annotations = {
-        "kubernetes.io/ingress.class" = "nginx"
-        "ingress.kubernetes.io/rewrite-target" = "/"
-        "cert-manager.io/cluster-issuer" = "letsencrypt-production"
+      "kubernetes.io/ingress.class"    = "nginx"
+      "cert-manager.io/cluster-issuer" = "letsencrypt-production"
     }
   }
   spec {
@@ -37,8 +36,12 @@ resource "kubernetes_ingress" "default_cluster_ingress" {
         http {
           path {
             backend {
-              service_name = "${replace(rule.value, ".", "-")}-service"
-              service_port = 80
+              service {
+                name = "${replace(rule.value, ".", "-")}-service"
+                port {
+                  number = 80
+                }
+              }
             }
             path = "/"
           }
@@ -49,7 +52,7 @@ resource "kubernetes_ingress" "default_cluster_ingress" {
       for_each = toset(var.top_level_domains)
       content {
         secret_name = "${replace(tls.value, ".", "-")}-tls"
-        hosts = [tls.value]
+        hosts       = [tls.value]
       }
     }
   }

@@ -24,6 +24,10 @@ variable top_level_domains {
   description = "Top level domains to create records and pods for"
   type    = list(string)
 }
+variable cert_names {
+  description = "Top level domains to create records and pods for"
+  type    = list(string)
+}
 
 variable letsencrypt_email {
   type = string

@@ -25,6 +25,8 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(
     digitalocean_kubernetes_cluster.default_cluster.kube_config[0].cluster_ca_certificate
   )
+  config_path = "~/.kube/config"
+
 }
 
 provider "helm" {

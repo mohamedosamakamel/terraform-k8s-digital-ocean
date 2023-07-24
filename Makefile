@@ -13,4 +13,4 @@ apply:
 
 .PHONY: destroy
 destroy:
-	@cd terraform && terraform destroy -var-file="production.tfvars"
+	@cd terraform && terraform destroy -auto-approve -var-file="production.tfvars"

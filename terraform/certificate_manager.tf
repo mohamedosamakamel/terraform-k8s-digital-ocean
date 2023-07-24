@@ -4,12 +4,12 @@ resource "helm_release" "cert-manager" {
   name             = "cert-manager"
   repository       = "https://charts.jetstack.io"
   chart            = "cert-manager"
-  version          = "v1.0.1"
+  version          = "v1.11.1"
   namespace        = "kube-system"
   timeout          = 120
-  depends_on = [
-    kubernetes_ingress.default_cluster_ingress,
-  ]
+   depends_on = [
+    kubernetes_ingress_v1.default_cluster_ingress,
+  ] 
   set {
     name  = "createCustomResource"
     value = "true"
@@ -28,7 +28,7 @@ resource "helm_release" "cluster-issuer" {
     helm_release.cert-manager,
   ]
   set {
-    name  = "letsencrypt_email"
+    name  = "letsencrypt_emaill"
     value = "${var.letsencrypt_email}"
   }
 }
